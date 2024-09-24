@@ -165,6 +165,11 @@ SELECT aw.Title
 FROM Artworks aw
 LEFT JOIN ExhibitionArtworks ea ON aw.ArtworkID = ea.ArtworkID
 WHERE ea.ExhibitionID IS NULL;
+-- 11) using suquery
+SELECT aw.Title
+FROM Artworks aw
+where aw.ArtworkID not in(select ea.ArtworkID
+from ExhibitionArtworks ea);
 
 select * from artworks
 select * from ExhibitionArtworks
