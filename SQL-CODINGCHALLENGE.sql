@@ -191,10 +191,17 @@ HAVING COUNT(aw.CategoryID) = (SELECT COUNT(*) FROM Categories);
 
 --13. List the total number of artworks in each category.
 -------same as 7th query
-
+SELECT c.Name AS CategoryName, COUNT(aw.ArtworkID) AS TotalArtworks
+FROM Categories c
+LEFT JOIN Artworks aw ON c.CategoryID = aw.CategoryID
+GROUP BY c.Name;
 --14. Find the artists who have more than 2 artworks in the gallery.
 -------- same as query 5
-
+SELECT a.Name
+FROM Artists a
+JOIN Artworks aw ON a.ArtistID = aw.ArtistID
+GROUP BY a.Name
+HAVING COUNT(aw.ArtworkID) > 2;
 --15. List the categories with the average year of artworks they contain, only for categories with more than 1 artwork.
 SELECT c.Name AS CategoryName, AVG(aw.Year) AS AverageYear
 FROM Categories c
@@ -218,6 +225,10 @@ HAVING AVG(aw.Year) > (SELECT AVG(Year) FROM Artworks);
 
 --18. List the artworks that were not exhibited in any exhibition.
 -------- same as query 11
+SELECT aw.Title
+FROM Artworks aw
+LEFT JOIN ExhibitionArtworks ea ON aw.ArtworkID = ea.ArtworkID
+WHERE ea.ExhibitionID IS NULL;
 --19. Show artists who have artworks in the same category as "Mona Lisa."
 SELECT DISTINCT a.Name
 FROM Artists a
@@ -226,3 +237,7 @@ WHERE aw.CategoryID = (SELECT CategoryID FROM Artworks WHERE Title = 'Mona Lisa'
 
 --20. List the names of artists and the number of artworks they have in the gallery
 -------- same as query 1
+select a.Name, count(aw.artworkID) as Number_of_Artworks
+from Artists a
+join Artworks aw on a.ArtistID = aw.ArtistID
+group by a.Name
